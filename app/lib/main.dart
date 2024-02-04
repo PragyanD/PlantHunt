@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 }
 
 class GlobeView extends StatelessWidget { // should be Stateful right?
-  final String googleMapsApiKey = "AIzaSyD0ESm8KukcGlnT5Mh-gDiHaW4h-209R38";
+  final String googleMapsApiKey = "";
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class GlobeView extends StatelessWidget { // should be Stateful right?
       ),
       body: InAppWebView(
         initialData: InAppWebViewInitialData(
-          data: '<iframe src="https://www.google.com/maps/embed/v1/view?key=$gaoogleMpsApiKey&center=0,0&zoom=1&maptype=satellite" width="100%" height="100%"></iframe>',
+          data: '<iframe src="https://www.google.com/maps/embed/v1/view?key=$googleMapsApiKey&center=0,0&zoom=1&maptype=satellite" width="100%" height="100%"></iframe>',
           mimeType: 'text/html',
           encoding: 'utf8',
         ),
