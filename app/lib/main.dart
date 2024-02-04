@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,49 +9,41 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'PlantSnap',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(),
+      home: GlobeView(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class GlobeView extends StatelessWidget { // should be Stateful right?
+  final String googleMapsApiKey = "AIzaSyD0ESm8KukcGlnT5Mh-gDiHaW4h-209R38";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Basic Flutter App with Green Theme'),
+        title: Text('Satellite Globe View'),
       ),
-      body: Center(
-        child: Text(
-          'You have pushed the button this many times: $_counter',
-          style: Theme.of(context).textTheme.headline4,
+      body: InAppWebView(
+        initialData: InAppWebViewInitialData(
+          data: '<iframe src="https://www.google.com/maps/embed/v1/view?key=$gaoogleMpsApiKey&center=0,0&zoom=1&maptype=satellite" width="100%" height="100%"></iframe>',
+          mimeType: 'text/html',
+          encoding: 'utf8',
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            javaScriptEnabled: true,
+          ),
+        ),
+        onLoadError: (InAppWebViewController controller, Uri? url, int code, String message) {
+          // Handle the error here
+          print('Error: $code, $message');
+
+          controller.loadData(
+            data: '<html><body><h1>Error Loading Map</h1><p>There was an error loading the map. Please try again later.</p></body></html>',
+            mimeType: 'text/html',
+            encoding: 'utf8',
+          );
+        },
       ),
     );
   }
